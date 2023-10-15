@@ -1,17 +1,15 @@
 package org.ecos.logic;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Scanner;
+import java.io.*;
+
+import static java.lang.System.lineSeparator;
 
 public class App {
 
     public static void main(String[] args) throws IOException {
         String fileName = "./testFile";
         //sliceAndDiceThisFileByChars(fileName, 5);
-        sliceAndDiceThisFileByLines(fileName, 3);
+        addLineSeparatorAGivenNumberOfTimes(fileName, 3);
     }
 
     public static void sliceAndDiceThisFileByChars(String fileName, int amountOfChars) throws IOException {
@@ -33,20 +31,22 @@ public class App {
         }
     }
 
-    public static void sliceAndDiceThisFileByLines(String fileName, int amountOfLines) throws IOException {
-        File usedFile = new File(fileName);
-        int counter = 1;
 
-        try (Scanner scanner = new Scanner(usedFile)) {
-            while (scanner.hasNextLine()){
-                String newFile = "parte" + counter;
-                try(FileWriter fileWriterOne = new FileWriter(newFile)){
-                    fileWriterOne.write(scanner.nextLine());
-                }
-                    counter++;
+    public static String addLineSeparatorAGivenNumberOfTimes(String givenFile, int numberOfLines) throws IOException {
+        StringBuilder linesDividedWithLines = new StringBuilder();
+        int numberOfDividing = numberOfLines - 1;
+        int dividingLength = (givenFile.length() / numberOfDividing);
+        int dividingIndex = dividingLength - 1;
+        try (FileReader fileReader = new FileReader(givenFile)) {
+            for (int i = 0; i < numberOfDividing; i++) {
+                linesDividedWithLines.append(givenFile, ((dividingIndex + lineSeparator().length()) * i), ((dividingIndex + lineSeparator().length()) * i) + dividingLength).append(lineSeparator());
             }
+            linesDividedWithLines.append(givenFile.substring(((dividingIndex + lineSeparator().length()) * numberOfDividing)));
+
         }
 
-    }
 
+
+        return linesDividedWithLines.toString();
+    }
 }
