@@ -10,7 +10,7 @@ public class App {
 
     public static void main(String[] args) throws IOException {
         sliceAndDiceThisFileLines("./testFile", 1);
-        mergeFileList(Arrays.asList("./part 1"));
+        mergeFileList(Arrays.asList("./part 1","./part 2"));
     }
 
     @SuppressWarnings("unused")
