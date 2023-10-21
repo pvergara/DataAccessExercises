@@ -125,12 +125,6 @@ public class AppTest {
 
         assertThat(11/3).isEqualTo(3);
         assertThat(11 % 3).isEqualTo(2);
-
-//        if(hasModule())
-//            numberOfIterators = (integerDividing + 1);
-//        else
-//            numberOfIterators = integerDividing;
-
     }
 
     private static String addLineSeparatorAGivenNumberOfTimes(int numberOfLines, String sampleList) {
