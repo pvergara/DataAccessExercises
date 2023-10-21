@@ -3,10 +3,54 @@ package org.ecos.logic;
 import java.io.*;
 import java.util.*;
 
+import static java.lang.System.lineSeparator;
+import static org.ecos.logic.FilePlaceEnumerator.*;
+
 public class App {
 
     public static void main(String[] args) throws IOException {
         sliceAndDiceThisFileLines("./testFile", 1);
+        mergeFileList(Arrays.asList("./part 1"));
+    }
+
+    @SuppressWarnings("unused")
+
+    public static void mergeFileList(List<String> givenFileList) throws IOException {
+
+        int counter = 0;
+        for (String element : givenFileList) {
+            List<String> fileAsStringList = getAFileDividedOnItsLines(element);
+            if(counter == 0 && givenFileList.size()==1)
+                writeTheseFileLinesIn(fileAsStringList,FIRST_AND_LAST);
+            else if(counter == 0)
+                writeTheseFileLinesIn(fileAsStringList, FIRST);
+            else if(counter == givenFileList.size()-1)
+                writeTheseFileLinesIn(fileAsStringList, LAST);
+            else
+                writeTheseFileLinesIn(fileAsStringList, REST);
+            counter++;
+        }
+    }
+
+    private static void writeTheseFileLinesIn(List<String> fileAsStringList,FilePlaceEnumerator filePlace) throws IOException {
+        int counter = 0; //ya se que podria haber usado booleans en vez de enums
+        String ficheroFrank = "FicheroFrank";
+
+        boolean mustAppend = (filePlace != FIRST) && (filePlace != FIRST_AND_LAST);
+        try (PrintWriter printWriter = new PrintWriter(new FileWriter(ficheroFrank, mustAppend))) {
+            for(String element: fileAsStringList) {
+                if (fileAsStringList.size() -1 == counter){
+                    String append = "";
+                    if(filePlace == FIRST || filePlace ==REST)
+                        append = lineSeparator();
+                    printWriter.write(element + append);
+                }
+                else{
+                    printWriter.write(element + System.lineSeparator());
+                }
+                counter++;
+            }
+        }
     }
 
     @SuppressWarnings("unused")
@@ -30,14 +74,14 @@ public class App {
     }
 
     public static void sliceAndDiceThisFileLines(String fileName, int amountOfLines) throws IOException {
-        ArrayList<String> lineArray = getAFileDividedOnItsLines(fileName);
+        List<String> lineArray = getAFileDividedOnItsLines(fileName);
 
         List<String> linesToRead = getListWithOnlyAmountOfLines(lineArray, amountOfLines);
 
         writeOnEveryFiles(linesToRead);
     }
 
-    private static ArrayList<String> getAFileDividedOnItsLines(String fileName) throws FileNotFoundException {
+    private static List<String> getAFileDividedOnItsLines(String fileName) throws FileNotFoundException {
         ArrayList<String> result = new ArrayList<>();
         try (Scanner scanner = new Scanner(new File(fileName))) {
             while (scanner.hasNextLine()) {
@@ -47,24 +91,27 @@ public class App {
         return result;
     }
 
-    private static List<String> getListWithOnlyAmountOfLines(ArrayList<String> lineArray, int amountOfLines) {
-        int counter = 0;
+
+    private static List<String> getListWithOnlyAmountOfLines(List<String> lineArray, int amountOfLines) {
+        int lineCounter = 0;
         int partCounter = 0;
 
         String[] fileParts = new String[lineArray.size()];
-        for (String getString : lineArray) {
-            if (counter < amountOfLines) {
+        for (String item : lineArray) {
+            if (lineCounter < amountOfLines) {
                 if (fileParts[partCounter] == null)
-                    fileParts[partCounter] = getString;
+                    fileParts[partCounter] = item;
                 else
-                    fileParts[partCounter] += getString;
-                counter++;
+                    fileParts[partCounter] += item;
+                lineCounter++;
+            }
 
-            }
-            if (counter == amountOfLines) {
-                counter = 0;
+            if (lineCounter == amountOfLines) {
+
+                lineCounter = 0;
                 partCounter++;
-            }
+            } else
+                fileParts[partCounter] += lineSeparator();
         }
         return Arrays.stream(fileParts).filter(Objects::nonNull).toList();
     }
