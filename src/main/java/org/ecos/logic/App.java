@@ -1,20 +1,15 @@
 package org.ecos.logic;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Scanner;
-
-import static java.lang.System.lineSeparator;
+import java.util.*;
 
 public class App {
 
     public static void main(String[] args) throws IOException {
-        String fileName = "./testFile";
-        //sliceAndDiceThisFileByChars(fileName, 5);
-        sliceAndDiceThisFileLines("./testFile", 4);
+        sliceAndDiceThisFileLines("./testFile", 1);
     }
 
+    @SuppressWarnings("unused")
     public static void sliceAndDiceThisFileByChars(String fileName, int amountOfChars) throws IOException {
         File usedFile = new File(fileName);
 
@@ -35,48 +30,54 @@ public class App {
     }
 
     public static void sliceAndDiceThisFileLines(String fileName, int amountOfLines) throws IOException {
-        File usedFile = new File(fileName);
+        ArrayList<String> lineArray = getAFileDividedOnItsLines(fileName);
 
-        try (Scanner scanner = new Scanner(usedFile);) {
-            ArrayList<String> lineArray = new ArrayList<>();
+        List<String> linesToRead = getListWithOnlyAmountOfLines(lineArray, amountOfLines);
 
-            while (scanner.hasNextLine()) {
-                lineArray.add(scanner.nextLine());
-            }
-
-            int counter = 0;
-            int partCounter = 0;
-            String[] fileParts = new String[lineArray.size()];
-
-            Arrays.fill(fileParts, "");
-
-
-            for (String getString : lineArray) {
-                if (counter < amountOfLines) {
-
-                    fileParts[partCounter] += getString + "\n";
-                    counter++;
-
-                }
-                if (counter == amountOfLines) {
-                    counter = 0;
-                    partCounter++;
-                }
-            }
-
-
-            String filePartName = "";
-           for (int i = 0; i < fileParts.length; i++) {
-                filePartName = "part " + (i+1);
-                if (!fileParts[i].isEmpty()){
-                    try(PrintWriter printWriter = new PrintWriter(filePartName)){
-                        printWriter.write(fileParts[i]);
-                    }
-                }
-
-            }
-
-        }
+        writeOnEveryFiles(linesToRead);
     }
 
+    private static ArrayList<String> getAFileDividedOnItsLines(String fileName) throws FileNotFoundException {
+        ArrayList<String> result = new ArrayList<>();
+        try (Scanner scanner = new Scanner(new File(fileName))) {
+            while (scanner.hasNextLine()) {
+                result.add(scanner.nextLine());
+            }
+        }
+        return result;
+    }
+
+    private static List<String> getListWithOnlyAmountOfLines(ArrayList<String> lineArray, int amountOfLines) {
+        int counter = 0;
+        int partCounter = 0;
+
+        String[] fileParts = new String[lineArray.size()];
+        for (String getString : lineArray) {
+            if (counter < amountOfLines) {
+                if (fileParts[partCounter] == null)
+                    fileParts[partCounter] = getString;
+                else
+                    fileParts[partCounter] += getString;
+                counter++;
+
+            }
+            if (counter == amountOfLines) {
+                counter = 0;
+                partCounter++;
+            }
+        }
+        return Arrays.stream(fileParts).filter(Objects::nonNull).toList();
+    }
+
+    private static void writeOnEveryFiles(List<String> linesToRead) throws FileNotFoundException {
+        String filePartName;
+        int i = 1;
+        for (String element : linesToRead) {
+            filePartName = "part " + i;
+            try (PrintWriter printWriter = new PrintWriter(filePartName)) {
+                printWriter.write(element);
+            }
+            i++;
+        }
+    }
 }
