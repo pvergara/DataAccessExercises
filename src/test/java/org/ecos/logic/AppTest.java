@@ -56,8 +56,7 @@ public class AppTest {
 
     @Test
     void splitAnStringInLines() {
-        String actualList = "" +
-                "the Old or Ancient Ones, the Elder Gods, of cosmic good, and those of cosmic evil, bearing " +
+        String actualList = "the Old or Ancient Ones, the Elder Gods, of cosmic good, and those of cosmic evil, bearing " +
                 "many names, and themselves of different groups, as if associated with the elements and yet " +
                 "transcending them: for there are the Water Beings, hidden in the depths; those of Air that " +
                 "are the primal lurkers beyond time; those of Earth, horrible animate survivors of distant e" +
