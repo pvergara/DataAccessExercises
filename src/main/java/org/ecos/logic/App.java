@@ -1,6 +1,9 @@
 package org.ecos.logic;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
 
 import static java.lang.System.lineSeparator;
 
@@ -9,7 +12,7 @@ public class App {
     public static void main(String[] args) throws IOException {
         String fileName = "./testFile";
         //sliceAndDiceThisFileByChars(fileName, 5);
-        addLineSeparatorAGivenNumberOfTimes(fileName, 3);
+        sliceAndDiceThisFileLines("./testFile", 4);
     }
 
     public static void sliceAndDiceThisFileByChars(String fileName, int amountOfChars) throws IOException {
@@ -31,22 +34,49 @@ public class App {
         }
     }
 
+    public static void sliceAndDiceThisFileLines(String fileName, int amountOfLines) throws IOException {
+        File usedFile = new File(fileName);
 
-    public static String addLineSeparatorAGivenNumberOfTimes(String givenFile, int numberOfLines) throws IOException {
-        StringBuilder linesDividedWithLines = new StringBuilder();
-        int numberOfDividing = numberOfLines - 1;
-        int dividingLength = (givenFile.length() / numberOfDividing);
-        int dividingIndex = dividingLength - 1;
-        try (FileReader fileReader = new FileReader(givenFile)) {
-            for (int i = 0; i < numberOfDividing; i++) {
-                linesDividedWithLines.append(givenFile, ((dividingIndex + lineSeparator().length()) * i), ((dividingIndex + lineSeparator().length()) * i) + dividingLength).append(lineSeparator());
+        try (Scanner scanner = new Scanner(usedFile);) {
+            ArrayList<String> lineArray = new ArrayList<>();
+
+            while (scanner.hasNextLine()) {
+                lineArray.add(scanner.nextLine());
             }
-            linesDividedWithLines.append(givenFile.substring(((dividingIndex + lineSeparator().length()) * numberOfDividing)));
+
+            int counter = 0;
+            int partCounter = 0;
+            String[] fileParts = new String[lineArray.size()];
+
+            Arrays.fill(fileParts, "");
+
+
+            for (String getString : lineArray) {
+                if (counter < amountOfLines) {
+
+                    fileParts[partCounter] += getString + "\n";
+                    counter++;
+
+                }
+                if (counter == amountOfLines) {
+                    counter = 0;
+                    partCounter++;
+                }
+            }
+
+
+            String filePartName = "";
+           for (int i = 0; i < fileParts.length; i++) {
+                filePartName = "part " + (i+1);
+                if (!fileParts[i].isEmpty()){
+                    try(PrintWriter printWriter = new PrintWriter(filePartName)){
+                        printWriter.write(fileParts[i]);
+                    }
+                }
+
+            }
 
         }
-
-
-
-        return linesDividedWithLines.toString();
     }
+
 }

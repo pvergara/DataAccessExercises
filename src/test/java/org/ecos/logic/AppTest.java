@@ -115,6 +115,24 @@ public class AppTest {
         assertThat(dividedLineCollection.get(8).length()).isEqualTo((actualList.length() / numberOfLines) - (actualList.length() % numberOfLines));
     }
 
+    @Test
+    void dividing5By3(){
+        assertThat(5/3).isEqualTo(1);
+        assertThat(5 % 3).isEqualTo(2);
+
+        assertThat(6/3).isEqualTo(2);
+        assertThat(6 % 3).isEqualTo(0);
+
+        assertThat(11/3).isEqualTo(3);
+        assertThat(11 % 3).isEqualTo(2);
+
+//        if(hasModule())
+//            numberOfIterators = (integerDividing + 1);
+//        else
+//            numberOfIterators = integerDividing;
+
+    }
+
     private static String addLineSeparatorAGivenNumberOfTimes(int numberOfLines, String sampleList) {
         StringBuilder linesDividedWithLines = new StringBuilder();
 
