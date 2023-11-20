@@ -1,0 +1,12 @@
+<Peliculas>
+    <Pelicula genero="Ciencia Ficción">
+        <Titulo>Dune</Titulo>
+        <Director>David Lynch</Director>
+        <Anho>1984</Anho>
+    </Pelicula>
+    <Pelicula genero="Aventuras">
+        <Titulo>Indiana Jones y la última cruzada</Titulo>
+        <Director>Steven Spielberg</Director>
+        <Anho>1984</Anho>
+    </Pelicula>
+</Peliculas>

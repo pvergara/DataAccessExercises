@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<filmoteca><!-- Las películas -->
+    <pelicula año="1984" genero="Ciencia Ficción" idioma="es">
+        <titulo>Dune</titulo>
+        <director>David Lynch</director>
+    </pelicula>
+    <pelicula año="2001" genero="Fantasia" idioma="es">
+        <titulo>El Señor de los Anillos</titulo>
+        <director>Peter Jackson</director>
+    </pelicula>
+    <pelicula año="1999" genero="Ciencia Ficción" idioma="en">
+        <titulo>Matrix</titulo>
+        <director>Andy Wachowski</director>
+        <director>Larry Wachowski</director>
+    </pelicula>
+    <pelicula año="1992" genero="Ciencia Ficción" idioma="en">
+        <titulo>Blade Runner</titulo>
+        <director>Ridley Scott</director>
+    </pelicula>
+    <pelicula año="1996" genero="Thriller" idioma="en">
+        <titulo>Fargo</titulo>
+        <director>Joel Coen</director>
+        <director>Ethan Coen</director>
+    </pelicula>
+    <pelicula año="1979" genero="Ciencia Ficción" idioma="en">
+        <titulo>Alien</titulo>
+        <director>Ridley Scott</director>
+    </pelicula>
+</filmoteca>
