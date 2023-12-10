@@ -1,0 +1,146 @@
+[
+  {
+    "documentOtherLink": "CONG/DS/PL/DSCD-14-PL-4.PDF#page=19",
+    "documentCode": "16",
+    "speakerCharge": "Diputado",
+    "session": {
+      "phase": "Debate",
+      "identity": "4",
+      "name": "Pleno",
+      "videoLlList": [
+        {
+          "linkToBroadcast": "https://app.congreso.es/v1/14644259I",
+          "sequence": "4",
+          "startCode": "120046",
+          "identity": "644259",
+          "linkToDownload": "https://static.congreso.es/audiovisual/video/leg14/400/14_000400_004/cortes/14_000400_004_0_19607_644259.mp4",
+          "source": "400",
+          "url": "14_000400_004_0_19607_644275.wmv",
+          "timeCodeAsString": "13:58:43",
+          "legislature": "14"
+        }
+      ]
+    },
+    "speaker": "Matute García de Jalón, Oskar (GEH Bildu)",
+    "dateAsString": "20200107",
+    "link": {
+      "piece": "ITA4",
+      "query": "(XIV.LEGI.).",
+      "format": "INTTZD1S.fmt",
+      "documentReference": "16",
+      "url": "/wc/servidorCGI",
+      "command": "VERDOC",
+      "base": "IT14"
+    },
+    "documentLink": "(DSCD-14-PL-4.CODI.)#(Página19)",
+    "detail": {
+      "authorList": [
+        {
+          "identity": 0,
+          "name": "S.M. El Rey Don Felipe VI",
+          "link": "",
+          "legislatureCode": "",
+          "order": 1
+        }
+      ],
+      "identity": "080 C 080/000001",
+      "link": {
+        "initiativeIdentity": "080/000001/0000",
+        "piece": "ITA4",
+        "query": "",
+        "format": "INITZLSS.fmt",
+        "documentReference": "2020010700040000400001200p00630800000010000644275",
+        "url": "/wc/servidorCGI",
+        "command": "VERLST",
+        "base": "IT14"
+      },
+      "source": "400",
+      "title": "Propuesta de candidato a la Presidencia del Gobierno de don Pedro Sánchez Pérez-Castejón, una vez celebradas las consultas con los representantes designados por los grupos políticos con representación parlamentaria, prevista en el artículo 99.1 de la Constitución."
+    },
+    "legislatureCode": "XIV",
+    "documentFormat": "PUWTZDTS.fmt",
+    "video": {
+      "linkToBroadcast": "",
+      "sequence": "4",
+      "startCode": "13:34:01",
+      "identity": "644275",
+      "linkToDownload": "",
+      "source": "400",
+      "url": "14_000400_004_0_19607_644275.wmv",
+      "timeCodeAsString": "13:40:13",
+      "legislature": "14"
+    }
+  },
+  {
+    "documentOtherLink": "CONG/DS/PL/DSCD-14-PL-4.PDF#page=17",
+    "documentCode": "15",
+    "speakerCharge": "Diputado",
+    "session": {
+      "phase": "Debate",
+      "identity": "4",
+      "name": "Pleno",
+      "videoLlList": [
+        {
+          "linkToBroadcast": "https://app.congreso.es/v1/14644259I",
+          "sequence": "4",
+          "startCode": "120046",
+          "identity": "644259",
+          "linkToDownload": "https://static.congreso.es/audiovisual/video/leg14/400/14_000400_004/cortes/14_000400_004_0_19607_644259.mp4",
+          "source": "400",
+          "url": "14_000400_004_0_19607_644274.wmv",
+          "timeCodeAsString": "13:58:43",
+          "legislature": "14"
+        }
+      ]
+    },
+    "speaker": "Esteban Bravo, Aitor (GV (EAJ-PNV))",
+    "dateAsString": "20200107",
+    "link": {
+      "piece": "ITA4",
+      "query": "(XIV.LEGI.).",
+      "format": "INTTZD1S.fmt",
+      "documentReference": "15",
+      "url": "/wc/servidorCGI",
+      "command": "VERDOC",
+      "base": "IT14"
+    },
+    "documentLink": "(DSCD-14-PL-4.CODI.)#(Página17)",
+    "detail": {
+      "authorList": [
+        {
+          "identity": 0,
+          "name": "S.M. El Rey Don Felipe VI",
+          "link": "",
+          "legislatureCode": "",
+          "order": 1
+        }
+      ],
+      "identity": "080 C 080/000001",
+      "link": {
+        "initiativeIdentity": "080/000001/0000",
+        "piece": "ITA4",
+        "query": "",
+        "format": "INITZLSS.fmt",
+        "documentReference": "2020010700040000400001200p00940800000010000644274",
+        "url": "/wc/servidorCGI",
+        "command": "VERLST",
+        "base": "IT14"
+      },
+      "source": "400",
+      "title": "Propuesta de candidato a la Presidencia del Gobierno de don Pedro Sánchez Pérez-Castejón, una vez celebradas las consultas con los representantes designados por los grupos políticos con representación parlamentaria, prevista en el artículo 99.1 de la Constitución."
+    },
+    "legislatureCode": "XIV",
+    "documentFormat": "PUWTZDTS.fmt",
+    "video": {
+      "linkToBroadcast": "",
+      "sequence": "4",
+      "startCode": "13:27:17",
+      "identity": "644274",
+      "linkToDownload": "",
+      "source": "400",
+      "url": "14_000400_004_0_19607_644274.wmv",
+      "timeCodeAsString": "13:32:50",
+      "legislature": "14"
+    }
+  }
+]

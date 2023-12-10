@@ -1,0 +1,13 @@
+1985	4.00	El juego de Ender	Orson Scott Card
+1992	3.92	Snow Crash	Neal Stephenson
+1959	3.62	Starship Troopers	Robert A. Heinlein
+1965	4.50	Dune	Frank Herbert
+1950	4.15	Fundación	Isaac Asimov
+1953	4.02	Fahrenheit 451	Ray Bradbury
+1968	4.14	2001: Una odisea del espacio	Arthur C. Clarke
+1984	3.89	Neuromante	William Gibson
+1932	3.98	Un mundo feliz	Aldous Huxley
+1949	4.50	1984	George Orwell
+1961	3.98	Solaris	Stanislaw Lem
+1895	3.87	La máquina del tiempo	H.G. Wells
+1921	3.94	Nosotros	Yevgeny Zamyatin

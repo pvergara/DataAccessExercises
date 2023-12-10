@@ -4,310 +4,185 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
-import javax.json.*;
-import javax.xml.parsers.*;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-import java.io.*;
-import java.util.*;
-
-import static javax.xml.parsers.DocumentBuilderFactory.newInstance;
 
 public class Main {
+    //Para catalogo separado por genero la ultima imagen de tipo medium
+    private static List<Node> attributesMale = new ArrayList<>();
+    private static List<Node> attributesFemale = new ArrayList<>();
 
-    private static String films = Objects.requireNonNull(Main.class.getResource("/peliculas.xml")).getPath();
-    private static boolean isDriverName;
-    private static boolean isDriver;
-    private static boolean isLong;
-    private static boolean isLat;
-    private static boolean isCircuit;
-    private static boolean isCircuitName;
-    private static boolean isPoints;
-    private static String points;
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
+/*
+        String filePath = "maria.json";
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException, ParserConfigurationException, SAXException {
+        JsonReader jsonReader = Json.createReader(new FileReader(filePath));
+        JsonObject jsonObject = jsonReader.readObject();
 
-        /*//Ejercicio 2
-        List<String> lines = getFromFile(Objects.requireNonNull(Main.class.getResource("/file.txt")).getPath());
-        System.out.println("Number of lines is: " + lines.size());
-        writeToFile(lines, "result.txt");
+        dataJson(jsonObject);
 
-        //Ejercicio 3
-        List<Book> books = new ArrayList<>(Arrays.asList(
-            new Book("The Call of Cthulhu", "H.P. Lovecraft", 100),
-            new Book("Lords and ladies", "Sir Terry Pratchett", 200),
-            new Book("Diamon Age", "Neal Stephenson", 150),
-            new Book("Neuromancer", "William Gibson", 300),
-            new Book("Necronomicom", "Abdul Ablareth", 233)
-            )
-        );
-        write(books);
+        //Ej3 Ficheros
+        List<Book> bookList = readFrom(new File("Libros.txt"));
 
-        Book book = read(books.get(0));
-        System.out.println(book);*/
+        bookList.forEach(System.out::println);
 
+        transform(bookList);
+        List<Book> anotherBookList = readFromBinary();
+        anotherBookList.forEach(System.out::println);
+*/
 
-        //Ejercicio 8
-        //getSax("Carreras.xml");
+        //Father's exercise
 
-        //Ejercicio 11
-        showDriversNameTheCircuitsAswellAsTheAverageSpeedAndPointsObtainedIn(readJSON("Carreras.json"));
+        Document complexDocument = createTree("complex.xml");
+
+        Node father = complexDocument.getFirstChild();
+        getDataFrom(father);
+        Element lastMaleImage;
+        Element lastFemaleImage;
+        lastMaleImage = (Element) attributesMale.get(attributesMale.size() - 1);
+        lastFemaleImage = (Element) attributesFemale.get(attributesFemale.size() - 1);
+        System.out.println("The last image in the male category is: " + lastMaleImage.getAttribute("image"));
+        System.out.println();
+        System.out.println("The last image in the female category is: " + lastFemaleImage.getAttribute("image"));
+
 
     }
 
-    private static void showDriversNameTheCircuitsAswellAsTheAverageSpeedAndPointsObtainedIn(JsonValue jsonValue) {
-        if (jsonValue.getValueType() == JsonValue.ValueType.ARRAY){
-            JsonArray circuits = jsonValue.asJsonArray();
-            for (JsonValue circuit: circuits){
-                showDriversNameTheCircuitsAswellAsTheAverageSpeedAndPointsObtainedIn(circuit);
-            }
-        }
-        if (jsonValue.getValueType() == JsonValue.ValueType.OBJECT){
-            JsonObject circuits = jsonValue.asJsonObject();
-            for (String keyName: circuits.keySet()){
-                if(keyName.equals("Driver"))
-                    isDriver = true;
-                if(isDriver){
-                    isDriverName = keyName.equals("name");
-                }
-                if(keyName.equals("Constructor"))
-                    isDriver = false;
-                if (keyName.equals("Circuit")){
-                    isCircuit = true;
-                }
-                isPoints = keyName.equals("points");
+    private static void getDataFrom(Node father) {
+        NodeList elementList = father.getChildNodes();
 
-                if (isCircuit){
-                    isCircuitName = keyName.equals("name");
-                }
-                if(keyName.equals("date"))
-                    isCircuit = false;
-                isLong = keyName.equals("long");
-                isLat = keyName.equals("lat");
+        Node attribute;
+        for (int i = 0; i < elementList.getLength(); i++) {
+            Node currentNode = elementList.item(i);
+            if (currentNode.getNodeType() == Node.ELEMENT_NODE) {
+                Element elementNode = (Element) currentNode;
 
-                showDriversNameTheCircuitsAswellAsTheAverageSpeedAndPointsObtainedIn(circuits.get(keyName));
-            }
-        }
-        //TODO is
-        if (jsonValue.getValueType() == JsonValue.ValueType.STRING){
-            if(isDriverName){
-                System.out.println("drivers name: "+jsonValue.toString().replace("\"",""));
-                if(points!=null) {
-                    System.out.println("Points: " + points);
-                    points = null;
-                }
-            }
-            if (isCircuitName){
-                System.out.println("circuits name: " +jsonValue.toString().replace("\"",""));
-            }
-        }
-        if (jsonValue.getValueType() == JsonValue.ValueType.NUMBER){
-            if (isLong){
-                System.out.println("long: "+jsonValue.toString().replace("\"",""));
-            }
-            if (isLat){
-                System.out.println("lat: "+jsonValue.toString().replace("\"",""));
-            }
-            if (isPoints){
-                points = jsonValue.toString().replace("\"","");
-            }
+                if (currentNode.getNodeName().equals("catalog_item")){
+                    if (elementNode.getAttribute("gender").equals("Men's")) {
+                        extracted(currentNode, attributesMale);
 
-        }
-
-    }
-
-    private static JsonValue readJSON(String file) throws FileNotFoundException {
-        try(JsonReader reader = Json.createReader(new FileReader(file))){
-            return reader.read();
-        }
-    }
-
-    public static void getSax(String path) throws ParserConfigurationException, SAXException, IOException {
-        SAXParserFactory factory = SAXParserFactory.newInstance();
-        SAXParser parser = factory.newSAXParser();
-        SAXHandler saxParser = new SAXHandler();
-        parser.parse(path, saxParser);
-    }
-    private static Book read(Book book) throws IOException, ClassNotFoundException {
-        Book theBook;
-        try (FileInputStream fin = new FileInputStream(book.title.replace(" ", "_"));
-             ObjectInputStream in = new ObjectInputStream(fin);) {
-            theBook = (Book) in.readObject();
-        }
-        return theBook;
-    }
-
-    private static void write(List<Book> books) throws IOException {
-        for (Book book : books) {
-            write(book);
-        }
-    }
-
-    private static void write(Book book) throws IOException {
-        try (FileOutputStream fos = new FileOutputStream(book.title.replace(" ", "_"));
-             ObjectOutputStream out = new ObjectOutputStream(fos)) {
-            out.writeObject(book);
-        }
-    }
-
-
-    private static List<String> getFromFile(String path) throws FileNotFoundException {
-        List<String> result = new ArrayList<>();
-        try (Scanner scanner = new Scanner(new File(path))) {
-            while (scanner.hasNextLine()) {
-                result.add(scanner.nextLine());
-            }
-        }
-        return result;
-    }
-
-    private static void writeToFile(List<String> lines, String file) throws FileNotFoundException {
-        String onlyOneLine = String.join(" ", lines);
-        try (PrintWriter printWriter = new PrintWriter(file)) {
-            printWriter.write(onlyOneLine);
-        }
-    }
-
-    private static void showMeTheNameOfThe(String XMLName) {
-        Document xmlDocument = makeADOMTreeFrom(XMLName);
-        if (xmlDocument == null)
-            return;
-
-        NodeList titles = xmlDocument.getElementsByTagName("titulo");
-
-        for (var i = 0; i < titles.getLength(); i++) {
-            System.out.println(titles.item(i).getTextContent());
-        }
-    }
-
-    private static void showMeTheNameOfTheDirectors(String XMLName) {
-        Document xmlDocument = makeADOMTreeFrom(XMLName);
-        if (xmlDocument == null)
-            return;
-        NodeList film = xmlDocument.getElementsByTagName("pelicula");
-
-        for (int i = 0; i < film.getLength(); i++) {
-            if (film.item(i).hasChildNodes()) {
-                NodeList filmDirectorsAndName = film.item(i).getChildNodes();
-
-                for (int j = 0; j < filmDirectorsAndName.getLength(); j++) {
-                    if (filmDirectorsAndName.item(j) == null) {
-                        break;
                     }
-                    if (filmDirectorsAndName.item(j).getNodeName().equals("titulo")) {
-                        System.out.println("Titulo: " + filmDirectorsAndName.item(j).getFirstChild().getNodeValue());
+                    else if (elementNode.getAttribute("gender").equals("Women's")){
+                        extracted(currentNode, attributesFemale);
+                    }
+                }
+                getDataFrom(currentNode);
+            }
+        }
+    }
+
+    private static void extracted(Node currentNode, List<Node> attributesMale) {
+        NodeList catalogList = currentNode.getChildNodes();
+        for (int j = 0; j < catalogList.getLength(); j++) {
+            if (catalogList.item(j).getNodeType() == Node.ELEMENT_NODE) {
+                Element currentElement = (Element) catalogList.item(j);
+                if (catalogList.item(j).getNodeName().equals("size") && currentElement.getAttribute("description").equals("Medium")) {
+                    NodeList imageList = catalogList.item(j).getChildNodes();
+                    for (int k = 0; k < imageList.getLength(); k++) {
+                        if (imageList.item(k).getNodeType() == Node.ELEMENT_NODE) {
+                            attributesMale.add(imageList.item(k));
+                        }
                     }
                 }
             }
         }
     }
 
-
-    public static Document makeADOMTreeFrom(String XMLName) {
-        Document xmlDocument = null;
+    private static Document createTree(String reference) {
+        Document doc = null;
         try {
-            DocumentBuilderFactory factory = newInstance();
-            factory.setExpandEntityReferences(false);
-            factory.setIgnoringComments(true);
-            factory.setIgnoringElementContentWhitespace(true);
-            DocumentBuilder builder = factory.newDocumentBuilder();
-            xmlDocument = builder.parse(XMLName);
+            DocumentBuilderFactory factoria = DocumentBuilderFactory.newInstance();
+            factoria.setIgnoringComments(true);
+            DocumentBuilder builder = factoria.newDocumentBuilder();
+            doc = builder.parse(reference);
         } catch (Exception e) {
-            System.out.println("There was an ERROR generating your precious, beautiful, scrumptious, tempting DOM Tree: " + e.getMessage());
+            System.out.println("Error generando el árbol DOM: " + e.getMessage());
         }
-        return xmlDocument;
+        return doc;
     }
+/*
 
-    public static List<Film> getFilmData(Document document) {
-        List<Film> actualFilmTitles = new ArrayList<>();
-        NodeList titles = document.getElementsByTagName("titulo");
-        for (int i = 0; i < titles.getLength(); i++) {
-            Node item = titles.item(i);
-            Element film = (Element) item.getParentNode();
-            NodeList directors = film.getElementsByTagName("director");
-            List<Director> directorCollection = new ArrayList<>();
-            for (int j = 0; j < directors.getLength(); j++) {
-                if (directors.item(j).getNodeType() == Node.ELEMENT_NODE) {
-                    Element element = (Element) directors.item(j);
-                    Director director = new Director(element.getFirstChild().getNodeValue());
+    private static void transform(List<Book> bookList) throws IOException {
 
-                    directorCollection.add(director);
-                }
-            }
-            actualFilmTitles.add(new Film(item.getFirstChild().getNodeValue(), directorCollection));
-        }
-        return actualFilmTitles;
-    }
-
-    public static void sliceAndDiceThisFileByChars(String fileName, int amountOfChars) throws IOException {
-        File usedFile = new File(fileName);
-
-        try (FileReader fileReaderOne = new FileReader(usedFile)) {
-            char[] buffer = new char[amountOfChars];
-
-            int bytesRead;
-            int counter = 1;
-
-            while ((bytesRead = fileReaderOne.read(buffer)) != -1) {
-                String newFile = "parte" + counter;
-                try (FileWriter fileWriterOne = new FileWriter(newFile)) {
-                    fileWriterOne.write(buffer, 0, bytesRead);
-                }
-                counter++;
+        try (ObjectOutputStream writer = new ObjectOutputStream(new FileOutputStream(new File("Libros.dat")))) {
+            for (int i = 0; i < bookList.size(); i++) {
+                writer.writeObject(bookList.get(i));
             }
         }
+
     }
 
-    public static void sliceAndDiceThisFileLines(String fileName, int amountOfLines) throws IOException {
-        ArrayList<String> lineArray = getAFileDividedOnItsLines(fileName);
-
-        List<String> linesToRead = getListWithOnlyAmountOfLines(lineArray, amountOfLines);
-
-        writeOnEveryFiles(linesToRead);
-    }
-
-    private static ArrayList<String> getAFileDividedOnItsLines(String fileName) throws FileNotFoundException {
-        ArrayList<String> result = new ArrayList<>();
-        try (Scanner scanner = new Scanner(new File(fileName))) {
+    private static List<Book> readFrom(File file) throws FileNotFoundException {
+        List<Book> books = new ArrayList<>();
+        try (Scanner scanner = new Scanner(file)) {
             while (scanner.hasNextLine()) {
-                result.add(scanner.nextLine());
+                String currentLine = scanner.nextLine();
+                List<String> fixedLines = Arrays.stream(currentLine.split("\t")).toList();
+                books.add(new Book(Integer.parseInt(fixedLines.get(0)), Float.parseFloat(fixedLines.get(1)), fixedLines.get(2), fixedLines.get(3)));
             }
         }
-        return result;
+        return books;
     }
 
-    private static List<String> getListWithOnlyAmountOfLines(ArrayList<String> lineArray, int amountOfLines) {
-        int counter = 0;
-        int partCounter = 0;
+    private static void dataJson(JsonObject data) {
+        List<String> hobbies = getList(data.getJsonArray("hobbies"));
+        String name = data.getString("nombre");
+        boolean married = data.getBoolean("casado");
+        int age = data.getInt("edad");
 
-        String[] fileParts = new String[lineArray.size()];
-        for (String getString : lineArray) {
-            if (counter < amountOfLines) {
-                if (fileParts[partCounter] == null)
-                    fileParts[partCounter] = getString;
-                else
-                    fileParts[partCounter] += getString;
-                counter++;
+        System.out.println("Hobbies: " + hobbies);
+        System.out.println("Nombre: " + name);
+        System.out.println(married ? "Esta casada" : "Not");
+        System.out.println(MessageFormat.format("Tiene {0} años\n", age));
 
-            }
-            if (counter == amountOfLines) {
-                counter = 0;
-                partCounter++;
-            }
-        }
-        return Arrays.stream(fileParts).filter(Objects::nonNull).toList();
-    }
+        System.out.println("Experiencia laboral:");
+        System.out.println();
+        JsonArray experience = data.getJsonArray("experienciaLaboral");
+        for (int i = 0; i < experience.size(); i++) {
+            JsonObject industryPosition = experience.getJsonObject(i);
+            int salary = industryPosition.getInt("salario");
 
-    private static void writeOnEveryFiles(List<String> linesToRead) throws FileNotFoundException {
-        String filePartName;
-        int i = 1;
-        for (String element : linesToRead) {
-            filePartName = "part " + i;
-            try (PrintWriter printWriter = new PrintWriter(filePartName)) {
-                printWriter.write(element);
-            }
-            i++;
+            JsonObject industry = industryPosition.getJsonObject("empresa");
+            String industryName = "";
+            String industrySector = "";
+            System.out.println("Salario: " + salary);
+
+            industryName = industry.getString("nombre");
+            industrySector = industry.getString("sector");
+
+            System.out.println("Nombre de la empresa: " + industryName);
+            System.out.println("Nombre del sector: " + industrySector);
         }
     }
+
+    private static List<String> getList(JsonArray data) {
+        List<String> addStringToListHere = new ArrayList<>();
+        for (int i = 0; i < data.size(); i++) {
+            addStringToListHere.add(data.getString(i));
+        }
+        return addStringToListHere;
+    }
+
+    private static List<Book> readFromBinary() throws IOException, ClassNotFoundException {
+        List<Book> createdBook = new ArrayList<>();
+        try (ObjectInputStream reader = new ObjectInputStream(Files.newInputStream(Path.of(Main.class.getResource("/libros.dat").getPath())))) {
+            boolean mustContinue = true;
+            while (mustContinue) {
+                try {
+                    createdBook.add((Book) reader.readObject());
+                } catch (EOFException e) {
+                    mustContinue = false;
+                }
+            }
+        }
+        return createdBook;
+    }
+
+
+*/
 }

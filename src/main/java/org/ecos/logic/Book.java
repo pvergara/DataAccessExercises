@@ -4,14 +4,35 @@ import java.io.Serializable;
 
 public class Book implements Serializable {
 
+    int year;
+    float score;
     String title;
     String author;
-    int pages;
 
-    public Book(String title, String author, int pages) {
+
+    public Book(int year, float score, String title, String author) {
+        this.year = year;
+        this.score = score;
         this.title = title;
         this.author = author;
-        this.pages = pages;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public float getScore() {
+        return score;
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "year=" + year +
+                ", score=" + score +
+                ", title='" + title + '\'' +
+                ", author='" + author + '\'' +
+                '}';
     }
 
     public String getTitle() {
@@ -20,18 +41,5 @@ public class Book implements Serializable {
 
     public String getAuthor() {
         return author;
-    }
-
-    public int getPages() {
-        return pages;
-    }
-
-    @Override
-    public String toString() {
-        return "Book{" +
-                "title='" + title + '\'' +
-                ", author='" + author + '\'' +
-                ", pages=" + pages +
-                '}';
     }
 }
